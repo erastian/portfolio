@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
+
+:root {
+    --color-white: #FFFFFF;
+    --color-not-so-white: #d1d1d1;
+    --color-not-so-so-white: #919191;
+    --color-gray: #7c7c7c;
+    --color-dark-gray: #444444;
+    --color-dark: #181c28;
+    --color-not-so-dark: #2c344a;
+    --section-background: linear-gradient(180deg, #1b202e 0, #181c28);
+    --font-title: 'Montserrat', sans-serif;
+    --font-menu: "Kode Mono", monospace;
+}
