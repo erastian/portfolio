@@ -38,8 +38,8 @@ const changeSlide = (i: number, direction?: 'left' | 'right') => {
     },
     opacity: 0,
     x: Math.abs(calcDirection()) * -1,
-    duration: .1,
-    ease: "power1.out",
+    duration: .2,
+    ease: "power1.in",
     onComplete: () => {
       activeSlide.value = i
     }
@@ -49,8 +49,8 @@ const changeSlide = (i: number, direction?: 'left' | 'right') => {
       x: calcDirection(),
     },
     autoAlpha: 1,
-    duration: .3,
-    delay: .1,
+    duration: .5,
+    delay: .2,
     x: 0,
     ease: "power1.out"
   })
