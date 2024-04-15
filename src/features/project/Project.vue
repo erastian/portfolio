@@ -102,6 +102,7 @@ defineProps<{
         font-size: 1.25rem;
         font-weight: 500;
         margin: auto 0;
+        cursor: default;
       }
 
       .statusLink {
@@ -133,6 +134,7 @@ defineProps<{
           padding: .25rem .5rem;
           font-family: var(--font-menu);
           font-weight: 500;
+          cursor: default;
         }
       }
     }

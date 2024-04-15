@@ -1,6 +1,7 @@
-# portfolio
+# Portfolio
 
-This project still in WIP phase
+This is my portfolio
+Unfortunately, this project still in WIP phase
 
 
 

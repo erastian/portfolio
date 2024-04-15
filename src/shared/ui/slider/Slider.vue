@@ -14,59 +14,46 @@ const props = withDefaults(defineProps<{
   autoPlay: false,
   secPerSlide: 3
 })
-let autoPlayFnc: any
 
-if (props.autoPlay) {
-  autoPlayFnc = setInterval(() => {
-    nextSlide()
-  }, props.secPerSlide * 1000)
-}
-onUnmounted(() => {
-  clearInterval(autoPlayFnc)
-})
 
 const activeSlide = ref(0)
 const image = ref<HTMLElement | any>(null)
+let timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
+timerFunction.call(() => {
+  nextSlide()
+})
 
 const changeSlide = (i: number, direction?: 'left' | 'right') => {
-  if (direction === 'left') {
-    gsap.fromTo(image.value, {
-      opacity: 0,
-      duration: 1,
-      x: -50,
-      onComplete: () => {
-        activeSlide.value = i
-      }
-    }, {
-      opacity: 1,
-      duration: .5,
-      x: 0
-    })
-  } else if (direction === 'right') {
-    gsap.fromTo(image.value, {
-      autoAlpha: 0,
-      duration: 1,
-      x: +50,
-      onComplete: () => {
-        activeSlide.value = i
-      }
-    }, {
-      autoAlpha: 1,
-      duration: .5,
-      x: 0
-    })
-  } else {
-    gsap.fromTo(image.value, {
-      autoAlpha: 0,
-      duration: 1,
-      onComplete: () => {
-        activeSlide.value = i
-      }
-    }, {
-      autoAlpha: 1,
-      duration: .5
-    })
+  const calcDirection = (): number => {
+    if (direction === 'left') {
+      return -350
+    } else if (direction === 'right') {
+      return +350
+    } else return 0
   }
+  gsap.to(image.value, {
+    startAt: {
+      x: 0,
+      opacity: 1
+    },
+    opacity: 0,
+    x: Math.abs(calcDirection()) * -1,
+    duration: .1,
+    ease: "power1.out",
+    onComplete: () => {
+      activeSlide.value = i
+    }
+  })
+  gsap.to(image.value, {
+    startAt: {
+      x: calcDirection(),
+    },
+    autoAlpha: 1,
+    duration: .3,
+    delay: .1,
+    x: 0,
+    ease: "power1.out"
+  })
 }
 const prevSlide = () => {
   if (props.images && activeSlide.value === 0) {
@@ -82,10 +69,18 @@ const nextSlide = () => {
     changeSlide(activeSlide.value + 1, 'right')
   }
 }
+
+if (props.autoPlay) {
+  timerFunction.play()
+}
+
+onUnmounted(() => {
+  timerFunction.kill()
+})
 </script>
 
 <template>
-  <div class="slider">
+  <div @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()" class="slider">
     <div class="imgHolder">
       <img ref="image" :src="images?.[activeSlide]" :alt="projectName + ' project image'">
     </div>
