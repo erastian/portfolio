@@ -31,13 +31,14 @@ const changeSlide = (i: number, direction?: 'left' | 'right') => {
       return +350
     } else return 0
   }
+
   gsap.to(image.value, {
     startAt: {
       x: 0,
       opacity: 1
     },
     opacity: 0,
-    x: Math.abs(calcDirection()) * -1,
+    x: calcDirection() * -1,
     duration: .2,
     ease: "power1.in",
     onComplete: () => {
