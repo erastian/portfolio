@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{
 
 const activeSlide = ref(0)
 const image = ref<HTMLElement | any>(null)
+
 let timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
 timerFunction.call(() => {
   nextSlide()

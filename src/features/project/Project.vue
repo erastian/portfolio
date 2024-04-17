@@ -2,15 +2,46 @@
 import { IProject } from "@/shared/types/types";
 import Slider from "@/shared/ui/slider/Slider.vue";
 import { Icon } from "@iconify/vue";
+import { nextTick, onMounted, onUpdated, ref } from "vue";
+import gsap from "gsap";
 
 defineProps<{
   project: IProject
 }>()
+
+
+const leftElements = ref<HTMLElement[] | any>()
+const rightElements = ref<HTMLElement[] | any>()
+const projectTitles = ref<HTMLElement | any>()
+
+onMounted(() => {
+  leftElements.value = document.querySelectorAll('.projectDetails > div > div:first-child')
+  rightElements.value = document.querySelectorAll('.projectDetails > div > div:last-child')
+
+  let timeline = gsap.timeline({ duration: 1, delay: 1, paused: true })
+  timeline.fromTo(projectTitles.value, { scale: .9 }, { autoAlpha: 1, scale: 1, duration: .3 }, 0)
+  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, 0)
+  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .1)
+  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .3)
+
+  nextTick(() => {
+    timeline.play()
+  })
+})
+
+onUpdated(() => {
+  let timeline = gsap.timeline({ duration: 1, delay: .5 })
+  timeline.from(projectTitles.value, { opacity: 0, duration: .3 }, 0)
+  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, 0)
+  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .1)
+  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .3)
+})
 </script>
 
 <template>
   <div class="projectHolder">
-    <Slider v-if="project.images?.length > 0" class="imgSlider" :images="project.images" :projectName="project.title" :auto-play="true" :sec-per-slide="5"/>
+    <Slider v-if="project.images?.length > 0" class="imgSlider" :images="project.images" :projectName="project.title"
+            :auto-play="true" :sec-per-slide="5"/>
     <div v-else class="imgSlider imgCap">
       <Icon icon="heroicons:photo" width="4rem" height="4rem"></Icon>
       <div class="text">
@@ -20,7 +51,7 @@ defineProps<{
       </div>
     </div>
     <div class="project">
-      <div class="projectTitles">
+      <div ref="projectTitles" class="projectTitles">
         <div class="title">{{ project.title }}</div>
         <div class="statusLink">
           <div v-if="project.link" class="link">
@@ -29,15 +60,23 @@ defineProps<{
           <div class="status">{{ project.status }}</div>
         </div>
       </div>
-      <div class="projectGoal">
-        <span>Goal:</span>{{ project.goal }}
-      </div>
-      <div class="projectDescription" v-html="project.description"></div>
-      <div class="projectResponsibilities">
-        <span>My responsibilities:</span>{{ project.responsibilities }}
-      </div>
-      <div class="projectStack">
-        <span>Stack:</span>{{ project.prj_stack }}
+      <div class="projectDetails">
+        <div class="projectGoal">
+          <div>Project Goal:</div>
+          <div class="">{{ project.goal }}</div>
+        </div>
+        <div class="projectDescription">
+          <div class="">Description:</div>
+          <div class="" v-html="project.description"></div>
+        </div>
+        <div class="projectResponsibilities">
+          <div>My responsibilities:</div>
+          <div class="">{{ project.responsibilities }}</div>
+        </div>
+        <div class="projectStack">
+          <div>Stack:</div>
+          <div class="">{{ project.prj_stack }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -68,11 +107,14 @@ defineProps<{
     }
 
     .text {
+      font-family: var(--font-menu);
+      font-size: .95rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: .1rem
+      gap: .1rem;
+      color: var(--color-gray);
     }
   }
 
@@ -82,14 +124,9 @@ defineProps<{
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    gap: .75rem;
     padding: 1rem 1.5rem 1rem .5rem;
+    overflow: hidden;
 
-    & span {
-      font-family: var(--font-menu);
-      font-weight: 500;
-      margin-right: .5rem;
-    }
 
     .projectTitles {
       display: flex;
@@ -139,9 +176,34 @@ defineProps<{
       }
     }
 
-    .projectDescription:before {
-      content: 'Description:';
-      font-family: var(--font-menu);
+    .projectDetails {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      line-height: 1.25rem;
+
+      & div {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+      }
+
+      & div > div:first-child {
+        display: flex;
+        flex: 0 0 12rem;
+        justify-content: flex-end;
+        align-items: flex-start;
+        font-family: var(--font-menu);
+        font-weight: 500;
+        margin-right: .5rem;
+      }
+
+      & div > div:not(:first-child) {
+        font-family: var(--font-title);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   }
 }
