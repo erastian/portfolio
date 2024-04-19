@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { IProject } from "@/shared/types/types";
 import Slider from "@/shared/ui/slider/Slider.vue";
-import { Icon } from "@iconify/vue";
 import { nextTick, onMounted, onUpdated, ref } from "vue";
 import gsap from "gsap";
 
@@ -18,11 +17,11 @@ onMounted(() => {
   leftElements.value = document.querySelectorAll('.projectDetails > div > div:first-child')
   rightElements.value = document.querySelectorAll('.projectDetails > div > div:last-child')
 
-  let timeline = gsap.timeline({ duration: 1, delay: 1, paused: true })
-  timeline.fromTo(projectTitles.value, { scale: .9 }, { autoAlpha: 1, scale: 1, duration: .3 }, 0)
-  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, 0)
-  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .1)
-  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .3)
+  const timeline = gsap.timeline({ duration: 1, delay: .5, paused: true })
+  timeline.to(projectTitles.value, { opacity: 1, duration: .5 }, .5)
+  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .5 }, .3)
+  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
+  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
 
   nextTick(() => {
     timeline.play()
@@ -30,26 +29,19 @@ onMounted(() => {
 })
 
 onUpdated(() => {
-  let timeline = gsap.timeline({ duration: 1, delay: .5 })
-  timeline.from(projectTitles.value, { opacity: 0, duration: .3 }, 0)
-  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, 0)
-  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .1)
-  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .3)
+  const timeline = gsap.timeline({ duration: 1 })
+  timeline.fromTo(projectTitles.value, { opacity: 0 }, { autoAlpha: 1, duration: .3 }, .5)
+  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, .5)
+  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
+  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
 })
 </script>
 
 <template>
   <div class="projectHolder">
-    <Slider v-if="project.images?.length > 0" class="imgSlider" :images="project.images" :projectName="project.title"
+    <Slider class="imgSlider" :images="project.images" :projectName="project.title"
             :auto-play="true" :sec-per-slide="5"/>
-    <div v-else class="imgSlider imgCap">
-      <Icon icon="heroicons:photo" width="4rem" height="4rem"></Icon>
-      <div class="text">
-        <div>Sorry, but</div>
-        <div>no available images in</div>
-        <div>{{ project.title }} project</div>
-      </div>
-    </div>
+
     <div class="project">
       <div ref="projectTitles" class="projectTitles">
         <div class="title">{{ project.title }}</div>
@@ -94,30 +86,6 @@ onUpdated(() => {
     min-height: fit-content;
   }
 
-  .imgCap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-not-so-so-white);
-    background: var(--section-background);
-
-    svg {
-      margin-bottom: 1rem;
-    }
-
-    .text {
-      font-family: var(--font-menu);
-      font-size: .95rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: .1rem;
-      color: var(--color-gray);
-    }
-  }
-
   .project {
     background: var(--section-background);
     color: var(--color-not-so-white);
@@ -133,6 +101,7 @@ onUpdated(() => {
       justify-content: space-between;
       margin-bottom: 1rem;
       align-items: flex-end;
+      opacity: 0;
 
       .title {
         font-family: var(--font-menu);

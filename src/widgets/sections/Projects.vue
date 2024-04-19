@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 import Loader from "@/shared/ui/loader/Loader.vue";
 import GlitchedWriter from "vue-glitched-writer";
 import { getProjects } from "@/shared/api/useProjects";
@@ -34,7 +34,7 @@ const changeSlider = (id: number): void => {
 const calcDelay = computed(() => {
   return (projectsData.value?.at(activeProject.value - 1)?.images?.length ?? 0) * 5 || 10
 })
-let timerFunction = gsap.timeline({
+const timerFunction = gsap.timeline({
   repeat: -1,
   repeatDelay: calcDelay.value + 5,
   delay: calcDelay.value + 5
@@ -48,6 +48,9 @@ timerFunction.call(() => {
     changeSlider(activeProject.value)
   }
 })
+onUpdated(() => {
+  timerFunction.restart(true)
+})
 </script>
 
 <template>
@@ -59,7 +62,7 @@ timerFunction.call(() => {
     <div v-else class="projectSectionContent">
       <Dots @change-slider="changeSlider($event)" :active-slide="activeProject"
             :total-sliders="projectsData?.length || 0" orientation="vertical" :icon-size="1.5"/>
-      <Project :project="projectsData ? projectsData[activeProject - 1] : []"/>
+      <Project @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()" :project="projectsData ? projectsData[activeProject - 1] : []"/>
     </div>
   </div>
 </template>
