@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import Dots from "@/shared/ui/sliderDots/Dots.vue";
-import { onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, onUpdated, ref } from "vue";
 import gsap from 'gsap'
 
 const props = withDefaults(defineProps<{
@@ -18,8 +18,9 @@ const props = withDefaults(defineProps<{
 
 const activeSlide = ref(0)
 const image = ref<HTMLElement | any>(null)
+const animBreaker = ref<boolean>(false)
 
-let timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
+const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
 timerFunction.call(() => {
   nextSlide()
 })
@@ -72,9 +73,22 @@ const nextSlide = () => {
   }
 }
 
-if (props.autoPlay) {
-  timerFunction.play()
-}
+onMounted(() => {
+  if (props.autoPlay) {
+    timerFunction.play()
+  }
+})
+onUpdated(() => {
+  if (!props.images) {
+    activeSlide.value = 0
+    animBreaker.value = true
+    timerFunction.kill()
+  } else if (props.images && animBreaker.value) {
+    activeSlide.value = 0
+    animBreaker.value = false
+    timerFunction.restart(true)
+  }
+})
 
 onUnmounted(() => {
   timerFunction.kill()
@@ -82,7 +96,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()" class="slider">
+  <div v-if="images && images?.length > 0" @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()"
+       class="slider">
     <div class="imgHolder">
       <img ref="image" :src="images?.[activeSlide]" :alt="projectName + ' project image'">
     </div>
@@ -91,6 +106,16 @@ onUnmounted(() => {
       <Dots orientation="horizontal" @change-slider="changeSlide($event - 1)" :icon-size="1.3"
             :total-sliders="images?.length" :active-slide="activeSlide + 1"/>
       <Icon @click="nextSlide" icon="heroicons:chevron-right-16-solid" width="2rem" height="2rem"></Icon>
+    </div>
+  </div>
+  <div v-else class="slider">
+    <div class="imgCap">
+      <Icon icon="heroicons:photo" width="4rem" height="4rem"></Icon>
+      <div class="text">
+        <div>Sorry, but</div>
+        <div>no available images in</div>
+        <div>{{ props.projectName }} project</div>
+      </div>
     </div>
   </div>
 </template>
@@ -117,6 +142,32 @@ onUnmounted(() => {
       left: 0;
       width: 100%;
       height: 100%;
+    }
+  }
+
+  .imgCap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-not-so-so-white);
+    background: var(--section-background);
+    height: 100%;
+    max-height: 25rem;
+
+    svg {
+      margin-bottom: 1rem;
+    }
+
+    .text {
+      font-family: var(--font-menu);
+      font-size: .95rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: .1rem;
+      color: var(--color-gray);
     }
   }
 
