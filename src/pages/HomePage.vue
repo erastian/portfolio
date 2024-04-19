@@ -31,11 +31,11 @@ onBeforeUnmount(() => {
 })
 
 function updateScroll() {
-  sections.value.forEach((sec: HTMLElement) => {
+  sections.value.forEach((section: HTMLElement) => {
     let top = window.scrollY;
-    let offset = sec.offsetTop - 150;
-    let height = sec.offsetHeight
-    let id = sec.getAttribute('id')
+    let offset = section.offsetTop - 150;
+    let height = section.offsetHeight
+    let id = section.getAttribute('id')
 
     if (top >= offset && top < offset + height) {
       currentSection.value = id

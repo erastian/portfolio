@@ -4,8 +4,11 @@ import UserPic from '@/entities/header/UserPic.vue';
 import Menu from "@/entities/header/Menu.vue";
 import Logo from "@/entities/header/Logo.vue";
 
-defineProps({
-  showSticky: Boolean
+withDefaults(defineProps<{
+  showSticky: boolean,
+  showMenu?: boolean
+}>(), {
+  showMenu: true
 })
 </script>
 
@@ -20,7 +23,7 @@ defineProps({
         <RouterLink v-show="!showSticky" to="/">
           <Logo/>
         </RouterLink>
-        <Menu :show-sticky="showSticky"/>
+        <Menu v-if="showMenu" :show-sticky="showSticky"/>
       </div>
       <div v-show="!showSticky" class="logoNameHolder">
         <UserPic/>
@@ -37,6 +40,7 @@ defineProps({
 .header {
   height: 25rem;
 }
+
 .header.sticky > .header-container {
   position: fixed;
   top: 0;

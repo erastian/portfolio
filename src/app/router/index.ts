@@ -16,6 +16,12 @@ const Router = createRouter({
       name: 'Admin',
       meta: { authRequired: true },
       component: () => import('@/pages/AdminPage.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Not Found',
+      meta: { authRequired: false },
+      component: () => import('@/pages/NotFoundPage.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -23,7 +29,7 @@ const Router = createRouter({
       return { el: to.hash }
     }
     if (to.name === 'Home') {
-      return {top: 0, left: 0}
+      return { top: 0, left: 0 }
     }
   }
 })
