@@ -5,6 +5,7 @@ import Header from "@/widgets/headers/Header.vue";
 import Section from "@/widgets/section.vue";
 import Skills from "@/widgets/sections/Skills.vue";
 import Projects from "@/widgets/sections/Projects.vue";
+import Pets from "@/widgets/sections/Pets.vue";
 
 const currentSection = ref<String | null>('')
 const sections = ref<HTMLElement | any>(null)
@@ -52,7 +53,7 @@ function updateScroll() {
   <Header :show-sticky="showSticky"/>
   <Skills title="stack" id="stack"/>
   <Projects title="projects" id="projects"/>
-  <Section title="pets" id="pets"/>
+  <Pets title="pets" id="pets"/>
   <Section title="contacts" id="contacts"/>
   <footer class="footer">
 

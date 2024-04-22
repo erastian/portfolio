@@ -39,6 +39,20 @@ export interface Database {
           order: number
           isPublished: boolean
         }
+      },
+      pets: {
+        Row: {
+          id: number,
+          created_at: string,
+          title: string,
+          description: string,
+          stack: string[],
+          images: string[],
+          order: number,
+          url: string,
+          isPublished: boolean,
+          gitUrl: string[],
+        }
       }
     }
   }

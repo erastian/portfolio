@@ -38,3 +38,16 @@ export interface IProject {
   status: string,
   isPublished: boolean
 }
+
+export interface IPet {
+  id: number,
+  created_at: string,
+  title: string,
+  description: string,
+  stack: string[],
+  images: string[],
+  order: number,
+  url: string,
+  isPublished: boolean,
+  gitUrl: string[],
+}
