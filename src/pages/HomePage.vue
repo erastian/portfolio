@@ -2,10 +2,11 @@
 import { onBeforeUnmount, onMounted, provide, ref } from "vue";
 import gsap from 'gsap'
 import Header from "@/widgets/headers/Header.vue";
-import Section from "@/widgets/section.vue";
 import Skills from "@/widgets/sections/Skills.vue";
 import Projects from "@/widgets/sections/Projects.vue";
 import Pets from "@/widgets/sections/Pets.vue";
+import Contacts from "@/widgets/sections/Contacts.vue";
+import Footer from "@/widgets/footer/Footer.vue";
 
 const currentSection = ref<String | null>('')
 const sections = ref<HTMLElement | any>(null)
@@ -18,7 +19,7 @@ onMounted(() => {
   window.addEventListener('scroll', updateScroll)
   updateScroll()
 
-  gsap.from(['.section'], {
+  gsap.from([ '.section' ], {
     delay: .3,
     duration: 1,
     autoAlpha: 0,
@@ -54,16 +55,10 @@ function updateScroll() {
   <Skills title="stack" id="stack"/>
   <Projects title="projects" id="projects"/>
   <Pets title="pets" id="pets"/>
-  <Section title="contacts" id="contacts"/>
-  <footer class="footer">
-
-  </footer>
+  <Contacts title="contacts" id="contacts"/>
+  <Footer class="footer"/>
 </template>
 
 <style scoped>
-.footer {
-  margin-top: 5rem;
-  min-height: 25rem;
-  background: var(--section-background);
-}
+
 </style>

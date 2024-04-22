@@ -7,7 +7,7 @@ export async function getProjects() {
       .eq("isPublished", true)
       .order("order", { ascending: true });
   if (error) {
-    console.error("Error fetching skills", error);
+    console.error("Error fetching Projects", error);
     throw new Error;
   }
   return data;

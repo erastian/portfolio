@@ -51,3 +51,14 @@ export interface IPet {
   isPublished: boolean,
   gitUrl: string[],
 }
+
+export interface IContact {
+  id: number,
+  created_at: string,
+  title: string,
+  icon?: string,
+  url: string,
+  color?: string,
+  order: number,
+  isPublished: boolean,
+}
