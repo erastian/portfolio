@@ -53,6 +53,18 @@ export interface Database {
           isPublished: boolean,
           gitUrl: string[],
         }
+      },
+      contacts: {
+        Row: {
+          id: number
+          created_at: string
+          title: string
+          icon?: string
+          url: string
+          color?: string
+          order: number
+          isPublished: boolean
+        }
       }
     }
   }
