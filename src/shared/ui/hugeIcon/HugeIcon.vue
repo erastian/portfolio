@@ -10,10 +10,14 @@ const props = defineProps<{
 }>()
 
 const mainColor = computed(() => props.color ? props.color : "var(--color-not-so-so-white)")
+const blink = computed(() => {
+  const random = Math.random()
+  if (random > .9) return true
+})
 </script>
 
 <template>
-  <a class="icon" :href="url" target="_blank">
+  <a class="icon" :class="blink ? 'blink' : ''" :href="url" target="_blank">
     <Icon v-if="icon" :icon="icon" width="5rem" height="5rem"/>
     <Icon v-else icon="heroicons:code-bracket" width="5rem" height="5rem"/>
     <span>{{ title }}</span>
@@ -41,7 +45,10 @@ const mainColor = computed(() => props.color ? props.color : "var(--color-not-so
   height: var(--size);
   width: var(--size);
   justify-content: space-around;
-  transition: .3s ease-in-out;
+  transition: .2s ease-in-out;
+  &.blink {
+    animation: neon-blink 5s infinite alternate;
+  }
 
   &:hover {
     filter: drop-shadow(0 0 .5rem var(--color-not-so-dark));
@@ -57,13 +64,39 @@ const mainColor = computed(() => props.color ? props.color : "var(--color-not-so
 
   svg {
     filter: drop-shadow(0 0 .15rem var(--glow));
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
   }
 
   span {
     font-family: var(--font-menu);
     font-size: 1.125rem;
     transition: .3s ease-in-out;
+  }
+}
+
+@keyframes neon-blink {
+  44% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: .7;
+  }
+
+  46% {
+    opacity: 1;
+  }
+
+  98% {
+    opacity: 1;
+  }
+
+  99% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 </style>
