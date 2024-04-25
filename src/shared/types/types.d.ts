@@ -49,7 +49,7 @@ export interface IPet {
   order: number,
   url: string,
   isPublished: boolean,
-  gitUrl: string[],
+  gitUrl: string,
 }
 
 export interface IContact {

@@ -20,7 +20,7 @@ const activeSlide = ref(0)
 const image = ref<HTMLElement | any>(null)
 const animBreaker = ref<boolean>(false)
 
-const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
+const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide, paused: true })
 timerFunction.call(() => {
   nextSlide()
 })
@@ -83,7 +83,7 @@ onUpdated(() => {
     activeSlide.value = 0
     animBreaker.value = true
     timerFunction.kill()
-  } else if (props.images && animBreaker.value) {
+  } else if (props.images && animBreaker.value && props.autoPlay) {
     activeSlide.value = 0
     animBreaker.value = false
     timerFunction.restart(true)
@@ -124,6 +124,7 @@ onUnmounted(() => {
 .slider {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   .imgHolder {
     min-width: 100%;
