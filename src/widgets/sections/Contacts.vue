@@ -20,7 +20,6 @@ onMounted(() => {
   } catch (e) {
     console.log(e)
   } finally {
-    console.log(contactsData.value)
     isLoading.value = false
   }
 })
