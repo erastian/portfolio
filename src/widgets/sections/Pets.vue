@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { getPets } from "@/shared/api/usePets";
 import { IPet } from "@/shared/types/types";
 import Pet from "@/features/pet/Pet.vue";
+import gsap from "gsap";
 
 defineProps({
   title: String
@@ -12,6 +13,9 @@ defineProps({
 
 const isLoading = ref<Boolean>(false)
 const petsData = ref<IPet[]>()
+const wrapper = ref<HTMLElement | any>(null)
+const pets = gsap.utils.toArray(wrapper.value.children)
+console.log(pets)
 
 onMounted(() => {
   try {
@@ -31,7 +35,7 @@ onMounted(() => {
     <div v-if="isLoading" ref="section" class="sectionContent">
       <Loader/>
     </div>
-    <div v-else class="petsSectionContent">
+    <div v-else ref="wrapper" class="petsSectionContent">
       <Pet v-for="pet in petsData" :pet="pet"></Pet>
     </div>
   </div>

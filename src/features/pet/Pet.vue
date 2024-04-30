@@ -11,9 +11,9 @@ defineProps<{
   <div class="pet">
     <Slider class="images" :images="pet.images" :project-name="pet.title" :sec-per-slide="5"/>
     <div class="details">
-      <div class="title">{{pet.title}}</div>
+      <div class="title">{{ pet.title }}</div>
       <div class="stack">
-        <span v-for="stack in pet.stack" :key="stack">{{stack}}</span>
+        Stack: <span v-for="stack in pet.stack" :key="stack">{{ stack }}</span>
       </div>
       <div v-if="pet.url || pet.gitUrl" class="urls">
         <div v-if="pet.url" class="">
@@ -23,7 +23,7 @@ defineProps<{
           Github: <a :href="pet.gitUrl">github</a>
         </div>
       </div>
-      <div class="description">{{pet.description}}</div>
+      <div class="description">{{ pet.description }}</div>
     </div>
   </div>
 </template>
@@ -59,11 +59,13 @@ defineProps<{
       font-size: 1.25rem;
       margin-bottom: 1rem;
     }
+
     .stack {
       display: flex;
       gap: .5rem;
       font-family: var(--font-menu);
     }
+
     .urls {
       display: flex;
       flex-direction: column;
@@ -74,6 +76,9 @@ defineProps<{
         text-decoration: none;
         color: var(--color-not-so-white)
       }
+    }
+    .description {
+      font-family: var(--font-title);
     }
   }
 }

@@ -73,10 +73,18 @@ const nextSlide = () => {
   }
 }
 
+const pauseSlider = () => {
+  if (props.autoPlay) timerFunction.pause()
+}
+
+const playSlider = () => {
+  if (props.autoPlay) timerFunction.play()
+}
+
 onMounted(() => {
   if (props.autoPlay) {
     timerFunction.play()
-  }
+  } else timerFunction.kill()
 })
 onUpdated(() => {
   if (!props.images) {
@@ -96,7 +104,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="images && images?.length > 0" @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()"
+  <div v-if="images && images?.length > 0" @mouseover="pauseSlider()" @mouseleave="playSlider()"
        class="slider">
     <div class="imgHolder">
       <img ref="image" :src="images?.[activeSlide]" :alt="projectName + ' project image'">
