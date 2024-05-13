@@ -37,7 +37,7 @@ defineProps<{
   position: relative;
   flex-shrink: 0;
   min-height: 100%;
-  width: 32.5%;
+  width: 97%;
   border-radius: .5rem;
 
   .images {
@@ -53,6 +53,7 @@ defineProps<{
     gap: .5rem;
     padding: .5rem 1rem;
     width: 100%;
+    text-align: start;
 
     .title {
       font-family: var(--font-menu);

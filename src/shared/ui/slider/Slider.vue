@@ -163,6 +163,7 @@ onUnmounted(() => {
     background: var(--section-background);
     height: 100%;
     max-height: 25rem;
+    border-radius: .5rem;
 
     svg {
       margin-bottom: 1rem;
