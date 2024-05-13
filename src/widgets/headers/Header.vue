@@ -49,6 +49,7 @@ withDefaults(defineProps<{
   height: 6rem;
   padding: 0 1.5rem;
   z-index: 99;
+  border-radius: 0;
 }
 
 .header-container {
@@ -59,6 +60,7 @@ withDefaults(defineProps<{
   top: 0;
   width: 100%;
   transition: 0.3s ease;
+  border-radius: 0 0 .5rem .5rem;
 }
 
 .header-container:after {

@@ -20,7 +20,7 @@ const activeSlide = ref(0)
 const image = ref<HTMLElement | any>(null)
 const animBreaker = ref<boolean>(false)
 
-const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide })
+const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide, paused: true })
 timerFunction.call(() => {
   nextSlide()
 })
@@ -73,17 +73,25 @@ const nextSlide = () => {
   }
 }
 
+const pauseSlider = () => {
+  if (props.autoPlay) timerFunction.pause()
+}
+
+const playSlider = () => {
+  if (props.autoPlay) timerFunction.play()
+}
+
 onMounted(() => {
   if (props.autoPlay) {
     timerFunction.play()
-  }
+  } else timerFunction.kill()
 })
 onUpdated(() => {
   if (!props.images) {
     activeSlide.value = 0
     animBreaker.value = true
     timerFunction.kill()
-  } else if (props.images && animBreaker.value) {
+  } else if (props.images && animBreaker.value && props.autoPlay) {
     activeSlide.value = 0
     animBreaker.value = false
     timerFunction.restart(true)
@@ -96,7 +104,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="images && images?.length > 0" @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()"
+  <div v-if="images && images?.length > 0" @mouseover="pauseSlider()" @mouseleave="playSlider()"
        class="slider">
     <div class="imgHolder">
       <img ref="image" :src="images?.[activeSlide]" :alt="projectName + ' project image'">
@@ -124,6 +132,7 @@ onUnmounted(() => {
 .slider {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   .imgHolder {
     min-width: 100%;
@@ -154,6 +163,7 @@ onUnmounted(() => {
     background: var(--section-background);
     height: 100%;
     max-height: 25rem;
+    border-radius: .5rem;
 
     svg {
       margin-bottom: 1rem;

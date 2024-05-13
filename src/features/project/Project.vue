@@ -94,6 +94,7 @@ onUpdated(() => {
     flex: 1 1 auto;
     padding: 1rem 1.5rem 1rem .5rem;
     overflow: hidden;
+    border-radius: .5rem;
 
 
     .projectTitles {

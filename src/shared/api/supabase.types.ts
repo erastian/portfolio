@@ -51,7 +51,7 @@ export interface Database {
           order: number,
           url: string,
           isPublished: boolean,
-          gitUrl: string[],
+          gitUrl: string,
         }
       },
       contacts: {
