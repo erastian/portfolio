@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import GlitchedWriter from "vue-glitched-writer";
 import Loader from "@/shared/ui/loader/Loader.vue";
-import { nextTick, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getPets } from "@/shared/api/usePets";
 import { IPet } from "@/shared/types/types";
 import Pet from "@/features/pet/Pet.vue";
-import gsap from "gsap";
 import { Icon } from "@iconify/vue";
 import { Carousel, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
@@ -52,7 +51,7 @@ const prev = () => {
       <Loader/>
     </div>
     <div v-else class="petsSectionContent">
-      <Carousel ref="carousel" :wrap-around="true" :breakpoints="breakpoints">
+      <Carousel ref="carousel" :wrap-around="true" :breakpoints="breakpoints" :class="petsData && petsData?.length > 3 ? 'short' : ''">
         <Slide v-for="pet in petsData" :pet="pet">
           <Pet :pet="pet"/>
         </Slide>
@@ -76,8 +75,12 @@ const prev = () => {
   justify-content: center;
 
   .carousel {
-    width: calc( 100% - 4rem );
+    width: 100%;
     z-index: 10;
+
+    &.short {
+      width: calc( 100% - 4rem );
+    }
   }
 
   .controls {
