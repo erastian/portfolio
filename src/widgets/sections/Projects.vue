@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, onUpdated, ref, watch } from "vue";
+import { computed, onMounted, onUpdated, ref, watch } from "vue";
 import Loader from "@/shared/ui/loader/Loader.vue";
 import GlitchedWriter from "vue-glitched-writer";
 import { getProjects } from "@/shared/api/useProjects";
@@ -46,17 +46,17 @@ const timerFunction = gsap.timeline({
   repeatDelay: calcDelay.value + 5,
   delay: calcDelay.value + 5
 })
-// timerFunction.call(() => {
-//   if (!getModalState.value) {
-//     if (projectsData.value && activeProject.value < projectsData.value?.length) {
-//       activeProject.value++
-//       changeSlider(activeProject.value)
-//     } else if (projectsData.value && activeProject.value === projectsData.value?.length) {
-//       activeProject.value = 1
-//       changeSlider(activeProject.value)
-//     }
-//   }
-// })
+timerFunction.call(() => {
+  if (!getModalState.value) {
+    if (projectsData.value && activeProject.value < projectsData.value?.length) {
+      activeProject.value++
+      changeSlider(activeProject.value)
+    } else if (projectsData.value && activeProject.value === projectsData.value?.length) {
+      activeProject.value = 1
+      changeSlider(activeProject.value)
+    }
+  }
+})
 const pauseSlider = () => {
   timerFunction.pause()
 }
