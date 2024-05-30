@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref } from "vue";
+import { computed, onBeforeMount, onMounted, onUpdated, ref, watch } from "vue";
 import Loader from "@/shared/ui/loader/Loader.vue";
 import GlitchedWriter from "vue-glitched-writer";
 import { getProjects } from "@/shared/api/useProjects";
@@ -7,24 +7,31 @@ import Project from "@/features/project/Project.vue";
 import { IProject } from "@/shared/types/types";
 import Dots from "@/shared/ui/sliderDots/Dots.vue";
 import { gsap } from "gsap";
+import { useAppStore } from "@/shared/stores/app";
+import { storeToRefs } from "pinia";
 
 defineProps({
   title: String
 })
 
-const isLoading = ref<Boolean>(false)
+const isLoading = ref<Boolean>(true)
 const projectsData = ref<IProject[]>()
 const activeProject = ref<number>(1)
+const appStore = useAppStore()
+const { getModalState } = storeToRefs(appStore)
+
+
+
 
 onMounted(() => {
   try {
     isLoading.value = true
-    getProjects().then((data) => projectsData.value = data)
+    getProjects().then(data => projectsData.value = data).finally(() => isLoading.value = false)
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoading.value = false
   }
+  console.log('Onmount. Projects data', projectsData.value)
+
 })
 
 const changeSlider = (id: number): void => {
@@ -39,18 +46,34 @@ const timerFunction = gsap.timeline({
   repeatDelay: calcDelay.value + 5,
   delay: calcDelay.value + 5
 })
-timerFunction.call(() => {
-  if (projectsData.value && activeProject.value < projectsData.value?.length) {
-    activeProject.value++
-    changeSlider(activeProject.value)
-  } else if (projectsData.value && activeProject.value === projectsData.value?.length) {
-    activeProject.value = 1
-    changeSlider(activeProject.value)
-  }
-})
+// timerFunction.call(() => {
+//   if (!getModalState.value) {
+//     if (projectsData.value && activeProject.value < projectsData.value?.length) {
+//       activeProject.value++
+//       changeSlider(activeProject.value)
+//     } else if (projectsData.value && activeProject.value === projectsData.value?.length) {
+//       activeProject.value = 1
+//       changeSlider(activeProject.value)
+//     }
+//   }
+// })
+const pauseSlider = () => {
+  timerFunction.pause()
+}
+
+const playSlider = () => {
+  timerFunction.play()
+}
 onUpdated(() => {
-  timerFunction.restart(true)
+  if (getModalState.value) timerFunction.pause()
+  else timerFunction.restart(true)
 })
+
+watch(getModalState, (t) => {
+  if (t) timerFunction.pause()
+  else timerFunction.resume()
+})
+
 </script>
 
 <template>
@@ -62,7 +85,8 @@ onUpdated(() => {
     <div v-else class="projectSectionContent">
       <Dots @change-slider="changeSlider($event)" :active-slide="activeProject"
             :total-sliders="projectsData?.length || 0" orientation="vertical" :icon-size="1.5"/>
-      <Project @mouseover="timerFunction.pause()" @mouseleave="timerFunction.play()" :project="projectsData ? projectsData[activeProject - 1] : []"/>
+      <Project v-for="project in projectsData" v-show="project.id === activeProject" :key="project.id" :active-project="activeProject" :project="project" @mouseover="pauseSlider()"
+               @mouseleave="playSlider()"/>
     </div>
   </div>
 </template>

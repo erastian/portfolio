@@ -80,6 +80,7 @@ defineProps<{
     }
     .description {
       font-family: var(--font-title);
+      color: var(--color-not-so-so-white)
     }
   }
 }

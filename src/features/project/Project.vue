@@ -1,46 +1,55 @@
 <script setup lang="ts">
 import { IProject } from "@/shared/types/types";
+import { computed, nextTick, onMounted, onUpdated, ref } from "vue";
 import Slider from "@/shared/ui/slider/Slider.vue";
-import { nextTick, onMounted, onUpdated, ref } from "vue";
 import gsap from "gsap";
 
-defineProps<{
-  project: IProject
+const props = defineProps<{
+  project: IProject,
+  activeProject: number
 }>()
-
 
 const leftElements = ref<HTMLElement[] | any>()
 const rightElements = ref<HTMLElement[] | any>()
 const projectTitles = ref<HTMLElement | any>()
+const sliderRoot = ref<HTMLElement | any>()
+let tl = gsap.timeline({ paused: true })
+
+
+const projectIsActive = computed(() => {
+  return props.activeProject === props.project.id
+})
 
 onMounted(() => {
   leftElements.value = document.querySelectorAll('.projectDetails > div > div:first-child')
   rightElements.value = document.querySelectorAll('.projectDetails > div > div:last-child')
 
-  const timeline = gsap.timeline({ duration: 1, delay: .5, paused: true })
-  timeline.to(projectTitles.value, { opacity: 1, duration: .5 }, .5)
-  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .5 }, .3)
-  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
-  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
+  tl = gsap.timeline({ duration: 1, delay: .5, paused: true })
+  tl.to(projectTitles.value, { opacity: 1, duration: .5 }, .5)
+  tl.from(sliderRoot.value, { opacity: 0, scale: .9, duration: .5 }, .3)
+  tl.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
+  tl.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
 
   nextTick(() => {
-    timeline.play()
+    tl.play()
   })
 })
 
 onUpdated(() => {
-  const timeline = gsap.timeline({ duration: 1 })
-  timeline.fromTo(projectTitles.value, { opacity: 0 }, { autoAlpha: 1, duration: .3 }, .5)
-  timeline.from('.imgSlider', { opacity: 0, scale: .9, duration: .2 }, .5)
-  timeline.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
-  timeline.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
+  tl = gsap.timeline({ duration: 1 })
+  tl.fromTo(projectTitles.value, { opacity: 0 }, { autoAlpha: 1, duration: .3 }, .5)
+  tl.fromTo(sliderRoot.value, { opacity: 0, scale: .9 }, { opacity: 1, scale: 1, duration: .2 }, .5)
+  tl.fromTo(leftElements.value, { opacity: 0, x: -30 }, { opacity: 1, x: 0, }, .6)
+  tl.fromTo(rightElements.value, { opacity: 0, x: 20, }, { opacity: 1, x: 0, }, .7)
 })
 </script>
 
 <template>
   <div class="projectHolder">
-    <Slider class="imgSlider" :images="project.images" :projectName="project.title"
-            :auto-play="true" :sec-per-slide="5"/>
+    <div ref="sliderRoot" class="imgSlider">
+      <Slider :images="project.images" :projectName="project.title"
+              :auto-play="true" :sec-per-slide="5" :is-visible="projectIsActive"/>
+    </div>
 
     <div class="project">
       <div ref="projectTitles" class="projectTitles">

@@ -18,6 +18,7 @@ onMounted(() => {
   try {
     isLoading.value = true
     getSkills().then((data) => skillsData.value = data).finally(() => {
+      isLoading.value = false
       gsap.from(section.value.children, {
         autoAlpha: 0,
         y: +50,
@@ -28,8 +29,6 @@ onMounted(() => {
     })
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoading.value = false
   }
 })
 </script>

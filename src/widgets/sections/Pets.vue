@@ -29,11 +29,9 @@ const breakpoints = ref({
 onMounted(() => {
   try {
     isLoading.value = true
-    getPets().then((data) => petsData.value = data)
+    getPets().then((data) => petsData.value = data).finally(() => isLoading.value = false)
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoading.value = false
   }
 })
 const next = () => {
