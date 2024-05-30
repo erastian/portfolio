@@ -16,11 +16,9 @@ const contactsData = ref<IContact[]>()
 onMounted(() => {
   try {
     isLoading.value = true
-    getContacts().then((data) => contactsData.value = data)
+    getContacts().then((data) => contactsData.value = data).finally(() => isLoading.value = false)
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoading.value = false
   }
 })
 </script>

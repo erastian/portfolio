@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { RouteLocation } from "vue-router";
 import { supabase } from "@/shared/api/supabase";
-import { Actions, Getters, State } from "@/shared/stores/store";
+import { authActions, authState, authGetters } from "@/shared/stores/store";
 
-export const useAuthStore = defineStore<'auth', State, Getters, Actions>('auth', {
+export const useAuthStore = defineStore<'auth', authState, authGetters, authActions>('auth', {
   state() {
     return {
       currentUser: null,

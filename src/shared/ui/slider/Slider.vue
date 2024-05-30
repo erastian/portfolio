@@ -1,117 +1,187 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import Dots from "@/shared/ui/sliderDots/Dots.vue";
-import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import gsap from 'gsap'
+import { onMounted, onUpdated, ref, watch } from "vue";
+import { gsap } from 'gsap'
+import Modal from "@/shared/ui/modal/Modal.vue";
+import { useAppStore } from "@/shared/stores/app";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(defineProps<{
   images: string[] | null,
   autoPlay?: boolean,
   secPerSlide?: number,
-  projectName?: string
+  startFrom?: number,
+  projectName?: string,
+  isVisible?: boolean
 }>(), {
   images: null,
   autoPlay: false,
-  secPerSlide: 3
+  startFrom: 0,
+  secPerSlide: 3,
+  isVisible: true
 })
-
 
 const activeSlide = ref(0)
-const image = ref<HTMLElement | any>(null)
-const animBreaker = ref<boolean>(false)
+const slideForModal = ref(0);
+const showModal = ref<boolean>(false)
+const isSliderActive = ref<boolean>(false);
+const items = ref<HTMLCollection | null>(null);
+const wrapper = ref<HTMLElement | null>(null);
+const itemsCount = ref<number>(0);
+const appStore = useAppStore()
+const { getModalState } = storeToRefs(appStore)
+const isVisible = ref<boolean>(props.isVisible)
 
-const timerFunction = gsap.timeline({ repeat: -1, repeatDelay: props.secPerSlide, delay: props.secPerSlide, paused: true })
-timerFunction.call(() => {
-  nextSlide()
+
+// console.log('images', props.images)
+onMounted(() => {
+  if (props.images && props.images?.length > 0) {
+    items.value = wrapper.value?.children as HTMLCollection;
+    itemsCount.value = wrapper.value?.children.length || 0;
+    changeSlideTo(props.startFrom);
+    if (props.autoPlay) playSlider();
+  }
 })
 
-const changeSlide = (i: number, direction?: 'left' | 'right') => {
-  const calcDirection = (): number => {
-    if (direction === 'left') {
-      return -350
-    } else if (direction === 'right') {
-      return +350
-    } else return 0
+onUpdated(() => {
+  if (props.images && props.images?.length > 0) {
+    if (!isVisible.value) {
+      pauseSlider()
+    } else playSlider()
+  }
+})
+
+let currentIndex: number = -1;
+let animating: boolean;
+const translateAmount = 30, rotateAmount = 10;
+
+function changeSlideTo(index: number, direction: string = 'left') {
+  const sections = items.value || [];
+  const wrap = gsap.utils.wrap(0, sections.length);
+  index = wrap(index);
+
+  let leave: object, enter: object;
+
+  const defaultPosition = { transform: 'none', autoAlpha: 1 };
+
+  const tl = gsap.timeline({
+    defaults: { duration: .3, ease: 'power2.inOut', autoAlpha: 0 },
+    onComplete: () => {
+      animating = false
+    }
+  });
+
+  switch (direction) {
+    case 'left':
+      leave = { xPercent: -translateAmount, rotationY: -rotateAmount };
+      enter = { xPercent: translateAmount, rotationY: rotateAmount };
+      break;
+    case 'right':
+      leave = { xPercent: translateAmount, rotationY: rotateAmount };
+      enter = { xPercent: -translateAmount, rotationY: -rotateAmount };
+      break;
   }
 
-  gsap.to(image.value, {
-    startAt: {
-      x: 0,
-      opacity: 1
-    },
-    opacity: 0,
-    x: calcDirection() * -1,
-    duration: .2,
-    ease: "power1.in",
-    onComplete: () => {
-      activeSlide.value = i
-    }
-  })
-  gsap.to(image.value, {
-    startAt: {
-      x: calcDirection(),
-    },
-    autoAlpha: 1,
-    duration: .5,
-    delay: .2,
-    x: 0,
-    ease: "power1.out"
-  })
-}
-const prevSlide = () => {
-  if (props.images && activeSlide.value === 0) {
-    changeSlide(activeSlide.value = props.images?.length - 1, 'left')
-  } else {
-    changeSlide(activeSlide.value - 1, 'left')
+  tl.fromTo(sections[index], enter, defaultPosition);
+
+  activeSlide.value = index;
+
+  startTime = Date.now();
+  currentTime.value = 0;
+
+  if (currentIndex > -1 || currentIndex === 0) {
+    tl.to(sections[currentIndex], leave, 0).set(sections[currentIndex], { transform: 'none' });
   }
+
+  currentIndex = index
 }
-const nextSlide = () => {
-  if (props.images && activeSlide.value === props.images?.length - 1) {
-    changeSlide(0, 'right')
+
+let startTime = Date.now();
+let timerId: NodeJS.Timeout;
+const currentTime = ref(0);
+
+function countTime() {
+  if (props.autoPlay && props.isVisible) {
+    const result = Date.now() - startTime;
+    currentTime.value = result;
+
+    if (result >= props.secPerSlide * 1000) {
+      activeSlide.value += 1;
+      changeSlideTo(activeSlide.value);
+      startTime = Date.now();
+      clearTimeout(timerId);
+      countTime();
+    } else {
+      timerId = setTimeout(countTime, 100);
+    }
   } else {
-    changeSlide(activeSlide.value + 1, 'right')
+    return
   }
 }
 
 const pauseSlider = () => {
-  if (props.autoPlay) timerFunction.pause()
+  isSliderActive.value = false;
+  startTime = Date.now() - currentTime.value;
+  clearTimeout(timerId);
 }
-
 const playSlider = () => {
-  if (props.autoPlay) timerFunction.play()
+  if (!showModal.value || !getModalState.value) {
+    isSliderActive.value = true;
+    countTime();
+  }
+}
+const prevSlide = () => {
+  changeSlideTo(currentIndex - 1, 'right');
+}
+const nextSlide = () => {
+  changeSlideTo(currentIndex + 1, 'left');
 }
 
-onMounted(() => {
-  if (props.autoPlay) {
-    timerFunction.play()
-  } else timerFunction.kill()
-})
-onUpdated(() => {
-  if (!props.images) {
-    activeSlide.value = 0
-    animBreaker.value = true
-    timerFunction.kill()
-  } else if (props.images && animBreaker.value && props.autoPlay) {
-    activeSlide.value = 0
-    animBreaker.value = false
-    timerFunction.restart(true)
+const openModal = (idx: number) => {
+  slideForModal.value = idx;
+  useAppStore().setModalState(true)
+  pauseSlider();
+  showModal.value = true;
+}
+const closeModal = () => {
+  showModal.value = false
+  useAppStore().setModalState(false)
+  playSlider();
+  slideForModal.value = 0;
+}
+
+watch(getModalState, (t) => {
+  if (props.autoPlay && props.images) {
+    if (t) pauseSlider()
+    else playSlider()
   }
 })
 
-onUnmounted(() => {
-  timerFunction.kill()
-})
 </script>
 
 <template>
-  <div v-if="images && images?.length > 0" @mouseover="pauseSlider()" @mouseleave="playSlider()"
+  <div v-if="props.images && props.images?.length > 0" @mouseover="pauseSlider()" @mouseleave="playSlider()"
        class="slider">
-    <div class="imgHolder">
-      <img ref="image" :src="images?.[activeSlide]" :alt="projectName + ' project image'">
+    <div ref="wrapper" class="imgWrapper">
+      <div v-for="(img, idx) in props.images" :key="img" ref="items" class="imgHolder">
+        <img @click="openModal(idx)" ref="image" :src="img" :alt="projectName + ' project image'">
+      </div>
+
+      <Teleport to="body" v-if="showModal">
+        <Modal @closeModal="closeModal">
+          <template v-slot:header>
+            {{ projectName }} image
+          </template>
+          <template v-slot:body>
+            <img :src="images?.[slideForModal]" :alt="projectName + ' project image'">
+          </template>
+        </Modal>
+      </Teleport>
     </div>
     <div v-if="images && images?.length > 1" class="controls">
       <Icon @click="prevSlide" icon="heroicons:chevron-left-16-solid" width="2rem" height="2rem"></Icon>
-      <Dots orientation="horizontal" @change-slider="changeSlide($event - 1)" :icon-size="1.3"
+      <Dots orientation="horizontal" @change-slider="changeSlideTo($event - 1)" :icon-size="1.3"
             :total-sliders="images?.length" :active-slide="activeSlide + 1"/>
       <Icon @click="nextSlide" icon="heroicons:chevron-right-16-solid" width="2rem" height="2rem"></Icon>
     </div>
@@ -132,25 +202,39 @@ onUnmounted(() => {
 .slider {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100%;
 
-  .imgHolder {
-    min-width: 100%;
+
+  .imgWrapper {
     min-height: 20rem;
-    overflow: hidden;
     margin-bottom: .5rem;
     position: relative;
-    border-radius: .5rem;
-    cursor: pointer;
+    overflow: hidden;
 
-    img {
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+    .imgHolder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+
+      img {
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: .5rem;
+      }
     }
   }
 

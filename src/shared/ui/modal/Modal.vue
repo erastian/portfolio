@@ -47,7 +47,9 @@ function close() {
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
-  width: 25rem;
+  min-width: 25rem;
+  max-width: 80vh;
+  max-height: 100vh;
   border: 1px solid var(--color-not-so-dark);
   animation: animateShadow 2s ease-in-out infinite;
   position: relative;
