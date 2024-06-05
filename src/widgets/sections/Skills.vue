@@ -13,7 +13,7 @@ defineProps({
 const skillsData = ref<ISkill[]>([])
 const section = ref<HTMLElement | any>(null)
 const isLoading = ref<Boolean>(false)
-const tl = gsap.timeline({ duration: 1, delay: .2, paused: true })
+const tl = gsap.timeline({ duration: 1, paused: true })
 
 onMounted(() => {
   try {
