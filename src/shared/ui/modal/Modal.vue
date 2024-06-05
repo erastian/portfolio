@@ -11,8 +11,8 @@ function close() {
 </script>
 
 <template>
-  <div class="modal-backdrop">
-    <div class="modal">
+  <div class="modal-backdrop" @click="close">
+    <div class="modal" @click.stop>
       <header class="modal-header">
         <slot name="header"></slot>
         <button @click="close" type="button" class="btn-close">

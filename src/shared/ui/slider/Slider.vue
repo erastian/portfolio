@@ -102,7 +102,7 @@ let timerId: NodeJS.Timeout;
 const currentTime = ref(0);
 
 function countTime() {
-  if (props.autoPlay && props.isVisible) {
+  if (props.autoPlay && props.isVisible && !getModalState.value) {
     const result = Date.now() - startTime;
     currentTime.value = result;
 

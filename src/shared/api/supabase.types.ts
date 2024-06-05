@@ -65,6 +65,17 @@ export interface Database {
           order: number
           isPublished: boolean
         }
+      },
+      extra: {
+        Row: {
+          id: number
+          created_at: string
+          title?: string
+          icon?: string,
+          description?: string,
+          order: number
+          isPublished: boolean
+        }
       }
     }
   }
