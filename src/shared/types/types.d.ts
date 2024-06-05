@@ -62,3 +62,13 @@ export interface IContact {
   order: number,
   isPublished: boolean,
 }
+
+export interface IExtra {
+  id: number
+  created_at: string
+  title?: string
+  icon?: string,
+  description?: string,
+  order: number
+  isPublished: boolean
+}

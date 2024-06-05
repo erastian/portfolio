@@ -21,8 +21,6 @@ const appStore = useAppStore()
 const { getModalState } = storeToRefs(appStore)
 
 
-
-
 onMounted(() => {
   try {
     isLoading.value = true
@@ -30,8 +28,6 @@ onMounted(() => {
   } catch (e) {
     console.log(e)
   }
-  console.log('Onmount. Projects data', projectsData.value)
-
 })
 
 const changeSlider = (id: number): void => {
@@ -62,7 +58,7 @@ const pauseSlider = () => {
 }
 
 const playSlider = () => {
-  timerFunction.play()
+  timerFunction.resume()
 }
 onUpdated(() => {
   if (getModalState.value) timerFunction.pause()
@@ -85,7 +81,8 @@ watch(getModalState, (t) => {
     <div v-else class="projectSectionContent">
       <Dots @change-slider="changeSlider($event)" :active-slide="activeProject"
             :total-sliders="projectsData?.length || 0" orientation="vertical" :icon-size="1.5"/>
-      <Project v-for="project in projectsData" v-show="project.id === activeProject" :key="project.id" :active-project="activeProject" :project="project" @mouseover="pauseSlider()"
+      <Project v-for="project in projectsData" v-show="project.id === activeProject" :key="project.id"
+               :active-project="activeProject" :project="project" @mouseover="pauseSlider()"
                @mouseleave="playSlider()"/>
     </div>
   </div>

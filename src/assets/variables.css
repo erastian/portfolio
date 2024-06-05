@@ -9,6 +9,7 @@
     --color-dark: #181c28;
     --color-not-so-dark: #2c344a;
     --section-background: linear-gradient(180deg, #1b202e 0, #181c28);
+    --section-background-transparent: linear-gradient(180deg, rgba(27, 32, 46, 0.5) 0, rgba(24, 28, 40, 0.5));
     --font-title: 'Montserrat', sans-serif;
     --font-menu: "Kode Mono", monospace;
 }
