@@ -3,7 +3,7 @@ import { Icon } from "@iconify/vue";
 import Button from "@/shared/ui/button/Button.vue";
 import Badges from "@/entities/skills/Badges.vue";
 import Rating from "@/shared/ui/rating/Rating.vue";
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import gsap from "gsap";
 import { ISkill } from "@/shared/types/types";
 
@@ -16,21 +16,26 @@ const badgesClosingSignal = ref(false)
 const icon = ref<HTMLElement | any>()
 const exp = ref<HTMLElement | any>()
 const description = ref<HTMLElement | any>()
+const tl = gsap.timeline({ paused: true })
 
 onMounted(() => {
-  gsap.from(icon.value, {
+  tl.from(icon.value, {
     opacity: 0,
     ease: "power1.out",
     duration: 2
-  })
-  gsap.from(exp.value, {
+  }, 1)
+  tl.from(exp.value, {
     textContent: 0,
     duration: 2.5,
     snap: { textContent: 1 },
-  })
-  gsap.from(description.value, {
+  }, 1)
+  tl.from(description.value, {
     autoAlpha: 0,
     x: +30
+  }, 1)
+  nextTick(() => {
+
+    tl.play()
   })
 })
 
@@ -59,7 +64,7 @@ const toggleBadges = (): void => {
     <div class="skillExp">
       <span ref="exp">{{ skill.experience }}</span> year{{ skill.experience > 1 ? 's' : '' }}
     </div>
-    <div ref="description" class="skillDescription">{{ skill.description }}</div>
+    <div ref="description" class="skillDescription" v-html="skill.description"></div>
     <div v-if="skill.techDetails.length > 0" class="techDetails">
       <Badges :details="skill.techDetails" v-if="badgesOpen" :closingSignal="badgesClosingSignal"/>
       <Button @click="toggleBadges" variant="arrowed">show {{ badgesOpen ? 'less' : 'more' }}</Button>
