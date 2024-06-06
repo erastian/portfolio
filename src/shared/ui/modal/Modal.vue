@@ -1,10 +1,24 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
+import { onBeforeUnmount, onMounted } from "vue";
 
 const emit = defineEmits([
   'closeModal'
 ])
-
+onMounted(() => {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      close()
+    }
+  })
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      close()
+    }
+  })
+})
 function close() {
   emit('closeModal')
 }
