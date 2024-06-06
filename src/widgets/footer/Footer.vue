@@ -73,12 +73,12 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
   border-radius: .5rem .5rem 0 0;
-  //background: var(--section-background);
+  //background: var(--section-background-transparent);
+  background: var(--section-background);
 
   .content {
     display: flex;
     flex-wrap: wrap;
-    background: var(--section-background-transparent);
     min-height: 25rem;
     color: var(--color-not-so-white);
     padding: 1rem 1.5rem;
@@ -108,6 +108,7 @@ onMounted(() => {
         flex: 0 0 75%;
       }
     }
+
   }
 
   .copyrights {
@@ -118,6 +119,8 @@ onMounted(() => {
     font-family: var(--font-menu);
     font-size: .875rem;
   }
+
+
 
   .aurora {
     --diameter: 50vmax;

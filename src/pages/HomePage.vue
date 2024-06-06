@@ -56,7 +56,7 @@ function updateScroll() {
   <Projects title="projects" id="projects"/>
   <Pets title="pets" id="pets"/>
   <Contacts title="contacts" id="contacts"/>
-  <Footer class="footer"/>
+  <Footer />
 </template>
 
 <style scoped>
