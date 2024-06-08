@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, provide, ref } from "vue";
+import { nextTick, onMounted, provide, ref } from "vue";
 import gsap from 'gsap'
 import Header from "@/widgets/headers/Header.vue";
 import Skills from "@/widgets/sections/Skills.vue";
@@ -7,56 +7,85 @@ import Projects from "@/widgets/sections/Projects.vue";
 import Pets from "@/widgets/sections/Pets.vue";
 import Contacts from "@/widgets/sections/Contacts.vue";
 import Footer from "@/widgets/footer/Footer.vue";
+import StickyHeader from "@/widgets/headers/StickyHeader.vue";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger)
+
 
 const currentSection = ref<String | null>('')
-const sections = ref<HTMLElement | any>(null)
+const sections = ref<HTMLElement[] | any>(null)
 const showSticky = ref<Boolean>(false)
+const initialSticky = ref<Boolean>(false)
+const tl = gsap.timeline({ paused: true })
+
 
 provide('currentSection', currentSection)
 
 onMounted(() => {
-  sections.value = document.querySelectorAll('.section')
-  window.addEventListener('scroll', updateScroll)
-  updateScroll()
+  sections.value = gsap.utils.toArray('.section');
 
-  gsap.from([ '.section' ], {
+  sections.value.forEach((section: HTMLElement) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: '100 180',
+      end: '80% top',
+      // markers: true,
+      toggleActions: "restart none none none",
+      onUpdate: () => {
+        showSticky.value = currentSection.value === 'stack' || currentSection.value === 'projects' || currentSection.value === 'pets' || currentSection.value === 'contacts';
+        if (showSticky.value) initialSticky.value = true;
+      },
+      onEnter: () => {
+        currentSection.value = section.getAttribute('id')
+      },
+      onEnterBack: () => {
+        currentSection.value = section.getAttribute('id')
+      },
+      onLeave: () => {
+        if (window.scrollY < 350) {
+          currentSection.value = ''
+          showSticky.value = false
+        }
+      },
+      onLeaveBack: () => {
+        if (window.scrollY < 350) {
+          currentSection.value = ''
+          showSticky.value = false
+        }
+      }
+    })
+  })
+
+
+  tl.from([ '.section' ], {
     delay: .3,
     duration: 1,
     autoAlpha: 0,
     y: +100,
     stagger: .3,
     ease: "back.out(1.7)",
+    onComplete: () => {
+      ScrollTrigger.refresh()
+    }
+  })
+
+
+  nextTick(() => {
+    tl.play()
   })
 })
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', updateScroll)
-})
 
-function updateScroll() {
-  sections.value.forEach((section: HTMLElement) => {
-    let top = window.scrollY;
-    let offset = section.offsetTop - 150;
-    let height = section.offsetHeight
-    let id = section.getAttribute('id')
-
-    if (top >= offset && top < offset + height) {
-      currentSection.value = id
-    }
-    if (top < 200) {
-      currentSection.value = ''
-    }
-    showSticky.value = top > 350;
-  })
-}
 </script>
 
 <template>
-  <Header :show-sticky="showSticky"/>
+  <Header id="header" :show-sticky="showSticky"/>
+  <StickyHeader v-if="initialSticky" :show-sticky="showSticky"/>
   <Skills title="stack" id="stack"/>
   <Projects title="projects" id="projects"/>
   <Pets title="pets" id="pets"/>
   <Contacts title="contacts" id="contacts"/>
-  <Footer />
+  <Footer/>
 </template>
 
 <style scoped>
