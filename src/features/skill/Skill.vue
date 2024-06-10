@@ -50,6 +50,10 @@ const toggleBadges = (): void => {
     }, 300)
   }
 }
+
+const computeExp = (exp: number): number => {
+  return Math.round((Math.floor(Date.now() / 1000) - exp) / 60 / 60 / 24 / 365)
+}
 </script>
 
 <template>
@@ -62,7 +66,7 @@ const toggleBadges = (): void => {
       <Rating :level="skill.level"/>
     </div>
     <div class="skillExp">
-      <span ref="exp">{{ skill.experience }}</span> year{{ skill.experience > 1 ? 's' : '' }}
+      <span ref="exp">{{ computeExp(skill.experience) }}</span> year{{ computeExp(skill.experience) > 1 ? 's' : '' }}
     </div>
     <div ref="description" class="skillDescription" v-html="skill.description"></div>
     <div v-if="skill.techDetails.length > 0" class="techDetails">
