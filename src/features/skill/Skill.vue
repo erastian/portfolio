@@ -76,7 +76,7 @@ const computeExp = (exp: number): number => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .skillHolder {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -129,6 +129,23 @@ const computeExp = (exp: number): number => {
     grid-area: 2 / 2 / 3 / 13;
     margin: .5rem 1rem 0 0;
     font-family: var(--font-title);
+    line-height: 1.175rem;
+
+     &:deep(a) {
+       cursor: pointer;
+       text-decoration: none;
+       color: var(--color-not-so-white);
+       font-family: var(--font-menu);
+       font-weight: 700;
+       transition: color .3s ease-in-out;
+
+       &:hover {
+         text-decoration: underline;
+         color: var(--color-white);
+         filter: drop-shadow(0 0 .5rem var(--color-not-so-so-white));
+       }
+     }
+
   }
 
   .techDetails {

@@ -53,5 +53,6 @@ watch(() => props.closingSignal, () => {
   display: flex;
   flex-direction: row;
   gap: .5rem;
+  margin-top: 1rem;
 }
 </style>
