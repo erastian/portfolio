@@ -52,7 +52,8 @@ watch(() => props.closingSignal, () => {
 .detailsBadges {
   display: flex;
   flex-direction: row;
-  gap: .5rem;
+  flex-wrap: wrap;
+  gap: 1rem .5rem;
   margin-top: 1rem;
 }
 </style>
