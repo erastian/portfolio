@@ -24,6 +24,7 @@ defineProps<{
   border-radius: .5rem;
   display: flex;
   cursor: default;
+  flex: 0 0 auto;
 
   &:hover {
     animation: glow 1800ms ease-out infinite alternate;
