@@ -129,6 +129,7 @@ const computeExp = (exp: number): number => {
     grid-area: 2 / 2 / 3 / 13;
     margin: .5rem 1rem 0 0;
     font-family: var(--font-title);
+    font-size: .975rem;
     line-height: 1.175rem;
 
      &:deep(a) {
