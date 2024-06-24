@@ -262,6 +262,8 @@ watch(getModalState, (t) => {
       align-items: center;
       gap: .1rem;
       color: var(--color-gray);
+      padding: 0 1rem;
+      text-align: center;
     }
   }
 

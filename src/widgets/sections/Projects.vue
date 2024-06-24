@@ -92,7 +92,7 @@ watch(getModalState, (t) => {
 .projectSectionContent {
   display: flex;
   flex-direction: row;
-
+  min-height: 500px;
 
 }
 </style>

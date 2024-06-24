@@ -5,7 +5,7 @@ export async function getProjects() {
       .from("projects")
       .select('*')
       .eq("isPublished", true)
-      .order("order", { ascending: true });
+      .order("order", { ascending: false });
   if (error) {
     console.error("Error fetching Projects", error);
     throw new Error;

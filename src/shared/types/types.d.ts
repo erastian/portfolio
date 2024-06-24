@@ -33,9 +33,10 @@ export interface IProject {
   responsibilities: string,
   goal: string,
   images: string[],
-  order: number,
   link: string,
+  linkText: string,
   status: string,
+  order: number,
   isPublished: boolean
 }
 
