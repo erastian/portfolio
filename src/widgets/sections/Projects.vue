@@ -81,7 +81,7 @@ watch(getModalState, (t) => {
     <div v-else class="projectSectionContent">
       <Dots @change-slider="changeSlider($event)" :active-slide="activeProject"
             :total-sliders="projectsData?.length || 0" orientation="vertical" :icon-size="1.5"/>
-      <Project v-for="(project, i) in projectsData" v-show="i === activeProject + 1" :key="project.id"
+      <Project v-for="(project, i) in projectsData" v-show="i === activeProject - 1" :key="project.id"
                :active-project="activeProject" :project="project" @mouseover="pauseSlider()"
                @mouseleave="playSlider()"/>
     </div>
