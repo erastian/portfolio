@@ -56,7 +56,7 @@ onUpdated(() => {
         <div class="title">{{ project.title }}</div>
         <div class="statusLink">
           <div v-if="project.link" class="link">
-            <a :href="project.link" target="_blank">{{ project.link }}</a>
+            <a :href="project.link" target="_blank">{{ project.linkText ? project.linkText : project.link }}</a>
           </div>
           <div class="status">{{ project.status }}</div>
         </div>
