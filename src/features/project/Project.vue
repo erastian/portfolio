@@ -6,7 +6,8 @@ import gsap from "gsap";
 
 const props = defineProps<{
   project: IProject,
-  activeProject: number
+  activeProject: number,
+  currentProjectID: number
 }>()
 
 const leftElements = ref<HTMLElement[] | any>()
@@ -17,7 +18,7 @@ let tl = gsap.timeline({ paused: true })
 
 
 const projectIsActive = computed(() => {
-  return props.activeProject === props.project.id
+  return props.activeProject === props.currentProjectID
 })
 
 onMounted(() => {

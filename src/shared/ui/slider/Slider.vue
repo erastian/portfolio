@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import Dots from "@/shared/ui/sliderDots/Dots.vue";
-import { onMounted, onUpdated, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { gsap } from 'gsap'
 import Modal from "@/shared/ui/modal/Modal.vue";
 import { useAppStore } from "@/shared/stores/app";
@@ -31,7 +31,7 @@ const wrapper = ref<HTMLElement | null>(null);
 const itemsCount = ref<number>(0);
 const appStore = useAppStore()
 const { getModalState } = storeToRefs(appStore)
-const isVisible = ref<boolean>(props.isVisible)
+const isVisible = ref(() => props.isVisible)
 
 
 // console.log('images', props.images)
@@ -40,17 +40,16 @@ onMounted(() => {
     items.value = wrapper.value?.children as HTMLCollection;
     itemsCount.value = wrapper.value?.children.length || 0;
     changeSlideTo(props.startFrom);
-    if (props.autoPlay) playSlider();
   }
 })
 
-onUpdated(() => {
-  if (props.images && props.images?.length > 0) {
-    if (!isVisible.value) {
-      pauseSlider()
-    } else playSlider()
-  }
-})
+// onUpdated(() => {
+//   if (props.images && props.images?.length > 0) {
+//     if (!props.isVisible) {
+//       pauseSlider()
+//     } else if (props.autoPlay && props.images?.length > 1) playSlider()
+//   }
+// })
 
 let currentIndex: number = -1;
 let animating: boolean;
@@ -155,6 +154,14 @@ watch(getModalState, (t) => {
   if (props.autoPlay && props.images) {
     if (t) pauseSlider()
     else playSlider()
+  }
+})
+watch(isVisible.value, (t) => {
+  console.log(props.projectName, 'isVisible', t, activeSlide.value)
+  if (t) {
+    if (props.autoPlay && props.images && props.images?.length > 1) playSlider();
+  } else {
+    pauseSlider()
   }
 })
 
