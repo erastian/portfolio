@@ -13,14 +13,14 @@ defineProps<{
     <div class="details">
       <div class="title">{{ pet.title }}</div>
       <div class="stack">
-        Stack: <span v-for="stack in pet.stack" :key="stack">{{ stack }}</span>
+        Stack: <span v-for="(stack, i) in pet.stack" :key="stack">{{ stack }}{{i === pet.stack.length - 1 ? '.' : ','}}</span>
       </div>
       <div v-if="pet.url || pet.gitUrl" class="urls">
         <div v-if="pet.url" class="">
-          Demo: <a :href="pet.url">{{ pet.url }}</a>
+          Demo: <a target="_blank" :href="pet.url">{{ pet.url }}</a>
         </div>
         <div v-if="pet.gitUrl" class="">
-          Github: <a :href="pet.gitUrl">github</a>
+          Github: <a target="_blank" :href="pet.gitUrl">{{ pet.gitUrl }}</a>
         </div>
       </div>
       <div class="description">{{ pet.description }}</div>
@@ -65,6 +65,13 @@ defineProps<{
       display: flex;
       gap: .5rem;
       font-family: var(--font-menu);
+      flex-wrap: wrap !important;
+
+      span {
+        font-family: var(--font-title);
+        align-self: end;
+        color: var(--color-not-so-so-white);
+      }
     }
 
     .urls {
@@ -72,13 +79,17 @@ defineProps<{
       flex-direction: column;
       justify-content: space-between;
       font-family: var(--font-menu);
+      gap: .5rem;
 
       a {
         text-decoration: none;
-        color: var(--color-not-so-white)
+        font-family: var(--font-title);
+        color: var(--color-not-so-so-white)
       }
     }
+
     .description {
+      margin-top: .5rem;
       font-family: var(--font-title);
       color: var(--color-not-so-so-white)
     }
