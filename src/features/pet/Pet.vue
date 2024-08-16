@@ -13,7 +13,9 @@ defineProps<{
     <div class="details">
       <div class="title">{{ pet.title }}</div>
       <div class="stack">
-        Stack: <span v-for="(stack, i) in pet.stack" :key="stack">{{ stack }}{{i === pet.stack.length - 1 ? '.' : ','}}</span>
+        Stack: <span v-for="(stack, i) in pet.stack" :key="stack">{{
+          stack
+        }}{{ i === pet.stack.length - 1 ? '.' : ',' }}</span>
       </div>
       <div v-if="pet.url || pet.gitUrl" class="urls">
         <div v-if="pet.url" class="">
@@ -84,7 +86,12 @@ defineProps<{
       a {
         text-decoration: none;
         font-family: var(--font-title);
-        color: var(--color-not-so-so-white)
+        color: var(--color-not-so-so-white);
+        transition: all .3s ease-in-out;
+
+        &:hover {
+          color: var(--color-not-so-white);
+        }
       }
     }
 

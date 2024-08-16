@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="section">
+  <div class="section skills">
     <glitched-writer class="sectionTitle" :text="'#' + title" appear/>
     <div ref="section" class="sectionContent">
       <Loader v-if="isLoading"/>
@@ -49,5 +49,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-
+.section.skills {
+  min-height: 187rem;
+}
 </style>

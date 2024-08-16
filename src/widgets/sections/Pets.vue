@@ -43,7 +43,7 @@ const prev = () => {
 </script>
 
 <template>
-  <div class="section">
+  <div class="section pets">
     <glitched-writer class="sectionTitle" :text="'#' + title" appear/>
     <div v-if="isLoading" ref="section" class="sectionContent">
       <Loader/>
@@ -67,6 +67,9 @@ const prev = () => {
 </template>
 
 <style scoped lang="scss">
+.section.pets {
+  min-height: 50rem;
+}
 .petsSectionContent {
   display: flex;
   position: relative;
