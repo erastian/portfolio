@@ -62,10 +62,10 @@ const computeExp = (exp: number): number => {
       <Icon :icon="skill.icon" width="4rem" height="4rem"></Icon>
     </div>
     <div class="skillName">{{ skill.tech }}</div>
-    <div class="skillLevel">
+    <div class="skillLevel" title="Level of technology proficiency">
       <Rating :level="skill.level"/>
     </div>
-    <div class="skillExp">
+    <div class="skillExp" title="How long have I been familiar with the technology (The useful usage time of the technology is of course lower)">
       <span ref="exp">{{ computeExp(skill.experience) }}</span> year{{ computeExp(skill.experience) > 1 ? 's' : '' }}
     </div>
     <div ref="description" class="skillDescription" v-html="skill.description"></div>
