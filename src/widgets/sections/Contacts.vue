@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="section">
+  <div class="section contacts">
     <glitched-writer class="sectionTitle" :text="'#' + title" appear/>
     <div v-if="isLoading" ref="section" class="sectionContent">
       <Loader/>
@@ -42,7 +42,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
+.section.contacts {
+  min-height: 25rem;
+}
 .sectionContent {
   min-height: 16rem;
   display: grid;

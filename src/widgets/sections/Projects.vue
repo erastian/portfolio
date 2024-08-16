@@ -73,7 +73,7 @@ watch(getModalState, (t) => {
 </script>
 
 <template>
-  <div class="section">
+  <div class="section projects">
     <glitched-writer class="sectionTitle" :text="'#' + title" appear/>
     <div v-if="isLoading" ref="section" class="sectionContent">
       <Loader/>
@@ -89,10 +89,12 @@ watch(getModalState, (t) => {
 </template>
 
 <style scoped>
+.section.projects {
+  min-height: 40rem;
+}
+
 .projectSectionContent {
   display: flex;
   flex-direction: row;
-
-
 }
 </style>
