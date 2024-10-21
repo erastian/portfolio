@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import gsap from 'gsap'
-import { nextTick, onMounted, ref } from "vue";
-import GlitchedWriter from "vue-glitched-writer";
-import Loader from "@/shared/ui/loader/Loader.vue";
-import { getExtra } from "@/shared/api/useExtra";
-import { IExtra } from "@/shared/types/types";
-import { Icon } from "@iconify/vue";
+import { nextTick, onMounted, ref } from 'vue';
+import GlitchedWriter from 'vue-glitched-writer';
+import Loader from '@/shared/ui/loader/Loader.vue';
+import { getExtra } from '@/shared/api/useExtra';
+import { IExtra } from '@/shared/types/types';
+import { Icon } from '@iconify/vue';
 
 const isLoading = ref<Boolean>(true)
 const extraData = ref<IExtra[] | null>(null)
@@ -53,7 +53,7 @@ onMounted(() => {
             title="Dear fellas, please, if you want to copy this, copy it with your own hands to better understand this code or maybe for some improvements, instead of just copypaste it. Warmly regards)">
           personal Portfolio created by
         </div>
-        <div>Megg Erastian @ {{ new Date().getFullYear() }}</div>
+        <div><a href="https://www.linkedin.com/in/erastian/" target="_blank">Megg Erastian</a> @ {{ new Date().getFullYear() }}</div>
       </div>
       <div class="aurora">
         <div></div>
@@ -118,8 +118,11 @@ onMounted(() => {
     margin: auto 2rem 1rem;
     font-family: var(--font-menu);
     font-size: .875rem;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
   }
-
 
 
   .aurora {
@@ -221,6 +224,12 @@ onMounted(() => {
     }
   }
 
-
+  @media screen and (max-width: 1000px) {
+    .content {
+      .extra {
+        width: 47%
+      }
+    }
+  }
 }
 </style>

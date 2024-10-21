@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import GlitchedWriter from "vue-glitched-writer";
-import Menu from "@/entities/header/Menu.vue";
-import gsap from "gsap";
-import { onMounted, onUpdated, ref } from "vue";
+import GlitchedWriter from 'vue-glitched-writer';
+import Menu from '@/entities/header/Menu.vue';
+import gsap from 'gsap';
+import { onMounted, onUpdated, ref, watch, watchEffect } from 'vue';
 
 const props = withDefaults(defineProps<{
   showSticky?: boolean,
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
   showMenu: true
 })
 const stickyHeader = ref<HTMLElement | null>(null)
-const tl = gsap.timeline({paused: true})
+const tl = gsap.timeline({ paused: true })
 
 onMounted(() => {
   tl.fromTo(stickyHeader.value, {
@@ -33,20 +33,21 @@ onUpdated(() => {
   }
 })
 
+
 </script>
 
 <template>
-<div ref="stickyHeader" class="sticky-header">
-  <div class="header-container">
-    <div class="menuHolder">
-      <RouterLink to="/" class="smallLogo" >
-        <glitched-writer class="firstChild" text="ERASTIAN" appear/>
-        <glitched-writer class="secondChild" text="the FrontEnd dev" appear/>
-      </RouterLink>
-      <Menu v-if="showMenu" :show-sticky="true"/>
+  <div ref="stickyHeader" class="sticky-header">
+    <div class="header-container">
+      <div class="menuHolder">
+        <RouterLink to="/" class="smallLogo">
+          <glitched-writer class="firstChild" text="ERASTIAN" appear/>
+          <glitched-writer class="secondChild" text="the FrontEnd dev" appear/>
+        </RouterLink>
+        <Menu v-if="showMenu" :show-sticky="true"/>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>

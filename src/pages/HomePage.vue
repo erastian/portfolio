@@ -33,7 +33,7 @@ onMounted(() => {
       // markers: true,
       toggleActions: "restart none none none",
       onUpdate: () => {
-        showSticky.value = currentSection.value === 'stack' || currentSection.value === 'projects' || currentSection.value === 'pets' || currentSection.value === 'contacts';
+        showSticky.value = currentSection.value === 'stack' || currentSection.value === 'projects' || currentSection.value === 'pets' || currentSection.value === 'contacts' || window.innerWidth < 970;
         if (showSticky.value) initialSticky.value = true;
       },
       onEnter: () => {

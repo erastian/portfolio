@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import GlitchedWriter from 'vue-glitched-writer'
 import UserPic from '@/entities/header/UserPic.vue';
-import Menu from "@/entities/header/Menu.vue";
-import Logo from "@/entities/header/Logo.vue";
+import Menu from '@/entities/header/Menu.vue';
+import Logo from '@/entities/header/Logo.vue';
 
 withDefaults(defineProps<{
   showMenu?: boolean
@@ -149,6 +149,12 @@ withDefaults(defineProps<{
   }
   100% {
     background-position: 0 50%
+  }
+}
+
+@media screen and (max-width: 970px) {
+  .header {
+    display: none;
   }
 }
 </style>
