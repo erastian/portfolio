@@ -157,7 +157,6 @@ watch(getModalState, (t) => {
   }
 })
 watch(isVisible.value, (t) => {
-  console.log(props.projectName, 'isVisible', t, activeSlide.value)
   if (t) {
     if (props.autoPlay && props.images && props.images?.length > 1) playSlider();
   } else {

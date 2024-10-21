@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import Button from "@/shared/ui/button/Button.vue";
-import Badges from "@/entities/skills/Badges.vue";
-import Rating from "@/shared/ui/rating/Rating.vue";
-import { nextTick, onMounted, ref } from "vue";
-import gsap from "gsap";
-import { ISkill } from "@/shared/types/types";
+import { Icon } from '@iconify/vue';
+import Button from '@/shared/ui/button/Button.vue';
+import Badges from '@/entities/skills/Badges.vue';
+import Rating from '@/shared/ui/rating/Rating.vue';
+import { nextTick, onMounted, ref } from 'vue';
+import gsap from 'gsap';
+import { ISkill } from '@/shared/types/types';
 
 defineProps<{
   skill: ISkill
@@ -21,7 +21,7 @@ const tl = gsap.timeline({ paused: true })
 onMounted(() => {
   tl.from(icon.value, {
     opacity: 0,
-    ease: "power1.out",
+    ease: 'power1.out',
     duration: 2
   }, 1)
   tl.from(exp.value, {
@@ -65,7 +65,8 @@ const computeExp = (exp: number): number => {
     <div class="skillLevel" title="Level of technology proficiency">
       <Rating :level="skill.level"/>
     </div>
-    <div class="skillExp" title="How long have I been familiar with the technology (The useful usage time of the technology is of course lower)">
+    <div class="skillExp"
+         title="How long have I been familiar with the technology (The useful usage time of the technology is of course lower)">
       <span ref="exp">{{ computeExp(skill.experience) }}</span> year{{ computeExp(skill.experience) > 1 ? 's' : '' }}
     </div>
     <div ref="description" class="skillDescription" v-html="skill.description"></div>
@@ -132,20 +133,20 @@ const computeExp = (exp: number): number => {
     font-size: .975rem;
     line-height: 1.175rem;
 
-     &:deep(a) {
-       cursor: pointer;
-       text-decoration: none;
-       color: var(--color-not-so-white);
-       font-family: var(--font-menu);
-       font-weight: 700;
-       transition: color .3s ease-in-out;
+    &:deep(a) {
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--color-not-so-white);
+      font-family: var(--font-menu);
+      font-weight: 700;
+      transition: color .3s ease-in-out;
 
-       &:hover {
-         text-decoration: underline;
-         color: var(--color-white);
-         filter: drop-shadow(0 0 .5rem var(--color-not-so-so-white));
-       }
-     }
+      &:hover {
+        text-decoration: underline;
+        color: var(--color-white);
+        filter: drop-shadow(0 0 .5rem var(--color-not-so-so-white));
+      }
+    }
 
   }
 
@@ -154,6 +155,36 @@ const computeExp = (exp: number): number => {
     display: flex;
     flex-direction: column;
     filter: grayscale(.8);
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .skillHolder {
+    .skillIcon {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+
+    .skillName {
+      grid-area: 1 / 3 / 2 / 8;
+      text-align: left;
+    }
+
+    .skillLevel {
+      grid-area: 1 / 8 / 2 / 11;
+    }
+
+    .skillExp {
+      grid-area: 1 / 11 / 2 / 13;
+    }
+
+    .skillDescription {
+      grid-area: 2 / 1 / 3 / 13;
+      margin: .5rem 1rem 0;
+    }
+    .techDetails {
+      grid-area: 3 / 1 / 4 / 13;
+      margin: 0 1rem;
+    }
   }
 }
 </style>

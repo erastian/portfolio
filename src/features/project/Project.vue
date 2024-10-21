@@ -187,4 +187,10 @@ onUpdated(() => {
     }
   }
 }
+@media screen and (max-width: 1000px) {
+  .projectHolder {
+    flex-direction: column;
+    margin-right: 1rem;
+  }
+}
 </style>
