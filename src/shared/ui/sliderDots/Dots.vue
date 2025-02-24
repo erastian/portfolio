@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (event: 'changeSlider', index: number): void
 }>();
 
-const changeSliderTo = (i) => {
+const changeSliderTo = (i: number) => {
   if (i === props.activeSlide) return;
   emit('changeSlider', i)
 }

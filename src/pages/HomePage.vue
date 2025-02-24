@@ -9,6 +9,7 @@ import Contacts from "@/widgets/sections/Contacts.vue";
 import Footer from "@/widgets/footer/Footer.vue";
 import StickyHeader from "@/widgets/headers/StickyHeader.vue";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Analytics } from '@vercel/analytics/nuxt'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -86,6 +87,7 @@ onMounted(() => {
   <Pets title="pets" id="pets"/>
   <Contacts title="contacts" id="contacts"/>
   <Footer/>
+  <Analytics/>
 </template>
 
 <style scoped>

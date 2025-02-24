@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.7",
+    "@vercel/analytics": "^1.5.0",
     "gsap": "^3.12.5",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
@@ -20,10 +21,10 @@
   "devDependencies": {
     "@iconify/vue": "^4.1.1",
     "@types/node": "^20.12.12",
-    "@vitejs/plugin-vue": "^5.0.3",
+    "@vitejs/plugin-vue": "^5.2.1",
     "sass": "^1.71.1",
-    "typescript": "^5.4.3",
-    "vite": "^5.0.11",
-    "vue-tsc": "^2.0.7"
+    "typescript": "^5.7.2",
+    "vite": "^6.1.1",
+    "vue-tsc": "^2.2.4"
   }
 }
