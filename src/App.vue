@@ -2,6 +2,8 @@
 import { RouteLocationRaw, RouterView, useRouter } from 'vue-router';
 import { supabase } from '@/shared/api/supabase';
 import { useAuthStore } from '@/shared/stores/auth';
+import { Analytics } from '@vercel/analytics/vue'
+
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -33,6 +35,7 @@ authStore.$onAction(({name, store, after}) => {
 </script>
 
 <template>
+  <Analytics/>
   <RouterView/>
 </template>
 

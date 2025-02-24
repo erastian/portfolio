@@ -9,7 +9,6 @@ import Contacts from "@/widgets/sections/Contacts.vue";
 import Footer from "@/widgets/footer/Footer.vue";
 import StickyHeader from "@/widgets/headers/StickyHeader.vue";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Analytics } from '@vercel/analytics/vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -80,7 +79,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <Analytics/>
   <Header id="header" :show-sticky="showSticky"/>
   <StickyHeader v-if="initialSticky" :show-sticky="showSticky"/>
   <Skills title="stack" id="stack"/>
